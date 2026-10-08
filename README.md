@@ -1,413 +1,361 @@
-<<<<<<< HEAD
-# 🎬 Movie Recommender System
+# 🎬 Movie Recommendation System
 
-A movie recommendation web application built with **FastAPI**, **Streamlit**, **TF-IDF**, and the **TMDB API**.
+A full-stack **Movie Recommendation System** built with **Python, FastAPI, Streamlit, Machine Learning, and the TMDB API**.
 
-The system provides movie search, movie details, popular/trending movie feeds, and two types of recommendations:
+The system provides movie search, movie details, personalized recommendations, genre-based recommendations, and a modern Streamlit web interface. The machine learning recommendation engine uses **TF-IDF and cosine similarity** to find movies with similar content.
 
-* 🔎 **TF-IDF-based Similar Movie Recommendation**
-* 🎭 **Genre-based Movie Recommendation**
-
-The application uses a **FastAPI backend** for API and recommendation logic and a **Streamlit frontend** for the user interface.
+The application is deployed using **Render**, with the Streamlit frontend and FastAPI backend deployed as separate web services.
 
 ---
 
-## 📌 Features
+## 🌐 Live Demo
 
-### 🏠 Home Feed
+### 🎨 Frontend — Streamlit
 
-The application provides different movie categories:
+👉 https://movie-recommendation-app-sfxg.onrender.com
 
-* 🔥 Trending
-* ⭐ Popular
-* 🏆 Top Rated
-* 🎬 Now Playing
-* 📅 Upcoming
+### ⚡ Backend — FastAPI
 
-Users can change the number of movie columns from the sidebar.
+👉 https://movie-recommendation-api-7910.onrender.com
 
-### 🔍 Movie Search
+### 📚 API Documentation
 
-Users can search movies using keywords such as:
+👉 https://movie-recommendation-api-7910.onrender.com/docs
+
+---
+
+# 📌 Project Overview
+
+Finding a movie to watch can be difficult when there are thousands of available movies.
+
+This project solves this problem by providing a movie recommendation platform where users can:
+
+- 🔍 Search for movies
+- 🎬 View movie details
+- 🤖 Get similar movie recommendations
+- 🎭 Get recommendations based on genre
+- ⭐ View movie ratings and information
+- 🖼️ Display movie posters using TMDB
+- 🌐 Access the application through a web browser
+
+The project follows a **frontend-backend architecture** where Streamlit handles the user interface and FastAPI provides the backend API.
+
+---
+
+# ✨ Features
+
+## 🎨 Streamlit Frontend
+
+The frontend provides an interactive user interface built with Streamlit.
+
+### Features
+
+- 🏠 Home page
+- 🔍 Movie search
+- 🎬 Movie details page
+- 🤖 Movie recommendations
+- 🎭 Genre-based recommendations
+- 🖼️ TMDB movie posters
+- 📱 Responsive movie grid
+- ⚡ API-based communication with FastAPI
+- 🔄 Dynamic navigation between pages
+
+---
+
+## ⚡ FastAPI Backend
+
+The FastAPI backend provides REST API endpoints for the frontend.
+
+It handles:
+
+- Movie search
+- Movie information
+- Recommendation generation
+- Genre-based recommendations
+- TF-IDF similarity
+- TMDB API communication
+- Health checking
+
+---
+
+# 🤖 Recommendation System
+
+The recommendation engine uses **content-based filtering**.
+
+The main idea is:
 
 ```text
-=======
-🎬 Movie Recommender System
-A movie recommendation web application built with FastAPI, Streamlit, TF-IDF, and the TMDB API.
-
-The system provides movie search, movie details, popular/trending movie feeds, and two types of recommendations:
-
-🔎 TF-IDF-based Similar Movie Recommendation
-🎭 Genre-based Movie Recommendation
-The application uses a FastAPI backend for API and recommendation logic and a Streamlit frontend for the user interface.
-
-📌 Features
-🏠 Home Feed
-The application provides different movie categories:
-
-🔥 Trending
-⭐ Popular
-🏆 Top Rated
-🎬 Now Playing
-📅 Upcoming
-Users can change the number of movie columns from the sidebar.
-
-🔍 Movie Search
-Users can search movies using keywords such as:
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-avengers
-batman
-love
-spider
-<<<<<<< HEAD
+Movie Information
+       │
+       ▼
+Text Processing
+       │
+       ▼
+TF-IDF Vectorization
+       │
+       ▼
+Movie Feature Vectors
+       │
+       ▼
+Cosine Similarity
+       │
+       ▼
+Similar Movies
 ```
 
-The application provides:
+### TF-IDF
 
-* Search suggestions
-* Matching movie results
-* Movie posters
-* Release year
-* TMDB movie ID
+TF-IDF (**Term Frequency-Inverse Document Frequency**) converts movie text information into numerical vectors.
 
-### 🎥 Movie Details
+Movies with similar descriptions, genres, keywords, or other textual information will have similar vector representations.
 
-After selecting a movie, the application displays:
+### Cosine Similarity
 
-* Movie title
-* Poster
-* Backdrop
-* Release date
-* Genres
-* Movie overview
+Cosine similarity is used to measure how similar two movie vectors are.
 
-### 🤖 TF-IDF Recommendation
-
-=======
-The application provides:
-
-Search suggestions
-Matching movie results
-Movie posters
-Release year
-TMDB movie ID
-🎥 Movie Details
-After selecting a movie, the application displays:
-
-Movie title
-Poster
-Backdrop
-Release date
-Genres
-Movie overview
-🤖 TF-IDF Recommendation
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-The backend uses a pre-trained TF-IDF matrix to calculate similarity between movies.
-
-The system returns movies that are textually similar to the selected movie.
-
-<<<<<<< HEAD
-### 🎭 Genre Recommendation
-
-The application also uses the selected movie's first genre to retrieve popular movies from TMDB belonging to that genre.
-
-### 🖼️ TMDB Integration
-
-Movie information and posters are retrieved from:
-
-**The Movie Database (TMDB)**
-
-The application uses the TMDB API for:
-
-* Movie search
-* Movie details
-* Posters
-* Backdrops
-* Trending movies
-* Popular movies
-* Top-rated movies
-* Upcoming movies
-* Now-playing movies
-* Genre discovery
+A higher cosine similarity means the movies are more similar.
 
 ---
 
 # 🏗️ System Architecture
 
 ```text
-                    ┌─────────────────────┐
-                    │       User          │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Streamlit Frontend  │
-                    │      app.py         │
-                    └──────────┬──────────┘
-                               │ HTTP Requests
-                               ▼
-                    ┌─────────────────────┐
-                    │   FastAPI Backend   │
-                    │      main.py        │
-                    └───────┬───────┬─────┘
-                            │       │
-                 ┌──────────┘       └──────────┐
-                 ▼                             ▼
-       ┌──────────────────┐          ┌──────────────────┐
-       │ Local ML Models  │          │    TMDB API      │
-       │                  │          │                  │
-       │ df.pkl           │          │ Search           │
-       │ indices.pkl      │          │ Details          │
-       │ tfidf.pkl        │          │ Posters          │
-       │ tfidf_matrix.pkl │          │ Genres           │
-       └──────────────────┘          └──────────────────┘
+                         USER
+                          │
+                          ▼
+                ┌──────────────────┐
+                │ Streamlit        │
+                │ Frontend         │
+                │                  │
+                │ app.py           │
+                └────────┬─────────┘
+                         │
+                         │ HTTP Requests
+                         ▼
+                ┌──────────────────┐
+                │ FastAPI          │
+                │ Backend          │
+                │                  │
+                │ main.py          │
+                └────────┬─────────┘
+                         │
+             ┌───────────┴───────────┐
+             │                       │
+             ▼                       ▼
+    ┌──────────────────┐    ┌──────────────────┐
+    │ ML Recommendation│    │ TMDB API         │
+    │ Engine           │    │                  │
+    │                  │    │ Movie information│
+    │ TF-IDF           │    │ Posters          │
+    │ Cosine Similarity│    │ Ratings          │
+    └──────────────────┘    └──────────────────┘
+```
+
+---
+
+# 🔄 Application Flow
+
+## Movie Search
+
+```text
+User
+ │
+ ▼
+Streamlit Search
+ │
+ ▼
+FastAPI
+ │
+ ▼
+TMDB API
+ │
+ ▼
+Movie Results
+ │
+ ▼
+Streamlit UI
+```
+
+---
+
+## Movie Recommendation
+
+```text
+User selects movie
+        │
+        ▼
+Streamlit
+        │
+        ▼
+FastAPI
+        │
+        ▼
+TF-IDF Movie Vector
+        │
+        ▼
+Cosine Similarity
+        │
+        ▼
+Similar Movies
+        │
+        ▼
+Streamlit
 ```
 
 ---
 
 # 📂 Project Structure
 
-Recommended project structure:
-
 ```text
-=======
-🎭 Genre Recommendation
-The application also uses the selected movie's first genre to retrieve popular movies from TMDB belonging to that genre.
-
-🖼️ TMDB Integration
-Movie information and posters are retrieved from:
-
-The Movie Database (TMDB)
-
-The application uses the TMDB API for:
-
-Movie search
-Movie details
-Posters
-Backdrops
-Trending movies
-Popular movies
-Top-rated movies
-Upcoming movies
-Now-playing movies
-Genre discovery
-🏗️ System Architecture
-┌─────────────────────┐
-│ User │
-└──────────┬──────────┘
+Movie-Recommendation-System/
 │
-▼
-┌─────────────────────┐
-│ Streamlit Frontend │
-│ app.py │
-└──────────┬──────────┘
-│ HTTP Requests
-▼
-┌─────────────────────┐
-│ FastAPI Backend │
-│ main.py │
-└───────┬───────┬─────┘
-│ │
-┌──────────┘ └──────────┐
-▼ ▼
-┌──────────────────┐ ┌──────────────────┐
-│ Local ML Models │ │ TMDB API │
-│ │ │ │
-│ df.pkl │ │ Search │
-│ indices.pkl │ │ Details │
-│ tfidf.pkl │ │ Posters │
-│ tfidf_matrix.pkl │ │ Genres │
-└──────────────────┘ └──────────────────┘
-📂 Project Structure
-Recommended project structure:
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-Movie-Recommender/
+├── data/
+│   │
+│   ├── processed/
+│   │   ├── df.pkl
+│   │   ├── indices.pkl
+│   │   ├── tfidf.pkl
+│   │   └── tfidf_matrix.pkl
+│   │
+│   └── raw/
+│
+├── notebooks/
+│   └── movies.ipynb
 │
 ├── app.py
 ├── main.py
-│
-├── df.pkl
-├── indices.pkl
-├── tfidf.pkl
-├── tfidf_matrix.pkl
-│
-├── movies.ipynb
-│
-├── .env
-├── .gitignore
 ├── requirements.txt
+├── .python-version
+├── .gitignore
 └── README.md
-<<<<<<< HEAD
 ```
 
-### File Description
+---
 
-| File               | Description                                    |
-| ------------------ | ---------------------------------------------- |
-| `app.py`           | Streamlit frontend                             |
-| `main.py`          | FastAPI backend                                |
-| `movies.ipynb`     | Movie data processing and ML/model preparation |
-| `df.pkl`           | Processed movie DataFrame                      |
-| `indices.pkl`      | Movie title-to-index mapping                   |
-| `tfidf.pkl`        | TF-IDF vectorizer                              |
-| `tfidf_matrix.pkl` | Pre-computed TF-IDF matrix                     |
-| `.env`             | TMDB API key                                   |
-| `requirements.txt` | Python dependencies                            |
-| `README.md`        | Project documentation                          |
+# 📄 Main Files
+
+| File / Folder      | Description                             |
+| ------------------ | --------------------------------------- |
+| `app.py`           | Streamlit frontend application          |
+| `main.py`          | FastAPI backend and recommendation APIs |
+| `movies.ipynb`     | Data analysis and ML model development  |
+| `df.pkl`           | Processed movie dataset                 |
+| `indices.pkl`      | Movie index mapping                     |
+| `tfidf.pkl`        | Trained TF-IDF vectorizer               |
+| `tfidf_matrix.pkl` | TF-IDF feature matrix                   |
+| `requirements.txt` | Python dependencies                     |
+| `.python-version`  | Python version configuration            |
+| `.gitignore`       | Git ignored files                       |
 
 ---
 
-# ⚙️ Technologies Used
+# 🛠️ Technologies Used
 
-### Frontend
+## Programming Language
 
-* Python
-* Streamlit
-* Requests
-* HTML/CSS
+- Python 3.14.5
 
-### Backend
+## Frontend
 
-* FastAPI
-* Uvicorn
-* Pydantic
-* HTTPX
-* Python-dotenv
+- Streamlit
 
-### Machine Learning
+## Backend
 
-* TF-IDF
-* Cosine Similarity
-* NumPy
-* Pandas
-* SciPy / Scikit-learn
+- FastAPI
+- Uvicorn
 
-### External API
+## Machine Learning
 
-* TMDB API
+- Scikit-learn
+- TF-IDF
+- Cosine Similarity
+- Content-Based Filtering
+
+## Data Processing
+
+- Pandas
+- NumPy
+- SciPy
+
+## External API
+
+- TMDB API
+
+## HTTP Communication
+
+- Requests
+- HTTPX
+
+## Environment Management
+
+- python-dotenv
+
+## Deployment
+
+- Render
+- GitHub
 
 ---
 
-# 🚀 Installation
+# 📦 Python Dependencies
+
+The project uses the following major dependencies:
+
+```text
+fastapi
+uvicorn
+streamlit
+pandas
+numpy
+scikit-learn
+scipy
+requests
+python-dotenv
+httpx
+```
+
+---
+
+# 🚀 Run the Project Locally
 
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git clone https://github.com/Kazi-Sadman/Movie-Recommendation-System.git
 ```
 
-Go inside the project:
+Go to the project directory:
 
 ```bash
-cd Movie-Recommender
+cd Movie-Recommendation-System
 ```
 
 ---
 
-## 2. Create a Virtual Environment
+# 🐍 2. Create Virtual Environment
 
-### Windows
+Windows:
 
 ```bash
-python -m venv venv
+python -m venv .venv
 ```
 
-Activate it:
+Activate:
 
 ```bash
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
-### Linux / macOS
+Linux / macOS:
 
 ```bash
-python3 -m venv venv
-```
-
-Activate it:
-
-```bash
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 ---
 
-# 📦 3. Install Dependencies
-
-Create a `requirements.txt` file containing:
-
-```text
-=======
-File Description
-File Description
-app.py Streamlit frontend
-main.py FastAPI backend
-movies.ipynb Movie data processing and ML/model preparation
-df.pkl Processed movie DataFrame
-indices.pkl Movie title-to-index mapping
-tfidf.pkl TF-IDF vectorizer
-tfidf_matrix.pkl Pre-computed TF-IDF matrix
-.env TMDB API key
-requirements.txt Python dependencies
-README.md Project documentation
-⚙️ Technologies Used
-Frontend
-Python
-Streamlit
-Requests
-HTML/CSS
-Backend
-FastAPI
-Uvicorn
-Pydantic
-HTTPX
-Python-dotenv
-Machine Learning
-TF-IDF
-Cosine Similarity
-NumPy
-Pandas
-SciPy / Scikit-learn
-External API
-TMDB API
-🚀 Installation
-
-1. Clone the Repository
-   git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-   Go inside the project:
-
-cd Movie-Recommender 2. Create a Virtual Environment
-Windows
-python -m venv venv
-Activate it:
-
-venv\Scripts\activate
-Linux / macOS
-python3 -m venv venv
-Activate it:
-
-source venv/bin/activate
-📦 3. Install Dependencies
-Create a requirements.txt file containing:
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-fastapi
-uvicorn
-streamlit
-requests
-httpx
-python-dotenv
-numpy
-pandas
-scikit-learn
-scipy
-pydantic
-<<<<<<< HEAD
-```
-
-Then install:
+# 📥 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -415,113 +363,25 @@ pip install -r requirements.txt
 
 ---
 
-# 🔑 4. Configure TMDB API Key
+# 🔑 4. Configure TMDB API
 
-Create a file named:
+The backend requires a TMDB API key.
 
-```text
-.env
-```
-
-Add:
-
-```env
-TMDB_API_KEY=YOUR_TMDB_API_KEY
-```
-
-Example:
-
-```env
-TMDB_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-Do **not** upload your `.env` file to GitHub.
-
-Add this to `.gitignore`:
+Create a `.env` file in the project root:
 
 ```text
-.env
-venv/
-__pycache__/
-*.pyc
+TMDB_API_KEY=your_tmdb_api_key
 ```
+
+The `.env` file should **not** be uploaded to GitHub.
+
+It is already included in `.gitignore`.
 
 ---
 
-# 🧠 5. Required ML Files
+# ⚡ 5. Run FastAPI Backend
 
-The FastAPI backend loads four pickle files when the server starts:
-
-```text
-=======
-Then install:
-
-pip install -r requirements.txt
-🔑 4. Configure TMDB API Key
-Create a file named:
-
-.env
-Add:
-
-TMDB_API_KEY=YOUR_TMDB_API_KEY
-Example:
-
-TMDB_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
-Do not upload your .env file to GitHub.
-
-Add this to .gitignore:
-
-.env
-venv/
-**pycache**/
-\*.pyc
-🧠 5. Required ML Files
-The FastAPI backend loads four pickle files when the server starts:
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-df.pkl
-indices.pkl
-tfidf_matrix.pkl
-tfidf.pkl
-<<<<<<< HEAD
-```
-
-Make sure these files are in the same directory as `main.py`.
-
-```text
-=======
-Make sure these files are in the same directory as main.py.
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-Movie-Recommender/
-│
-├── main.py
-├── app.py
-├── df.pkl
-├── indices.pkl
-├── tfidf_matrix.pkl
-└── tfidf.pkl
-<<<<<<< HEAD
-```
-
-If these files are missing, the backend will not be able to provide the TF-IDF recommendations.
-
----
-
-# ▶️ Running the Application Locally
-
-The project has **two parts**:
-
-1. FastAPI backend
-2. Streamlit frontend
-
-You need to run both.
-
----
-
-## 6. Start FastAPI Backend
-
-Open Terminal 1:
+Open a terminal and run:
 
 ```bash
 uvicorn main:app --reload
@@ -533,7 +393,15 @@ The backend will normally run at:
 http://127.0.0.1:8000
 ```
 
-You can test the health endpoint:
+### API Documentation
+
+Open:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### Health Check
 
 ```text
 http://127.0.0.1:8000/health
@@ -547,60 +415,16 @@ Expected response:
 }
 ```
 
-### FastAPI Documentation
-
-You can also open:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-This opens the interactive Swagger API documentation.
-
 ---
 
-# ▶️ 7. Start Streamlit Frontend
+# 🎨 6. Run Streamlit Frontend
 
-=======
-If these files are missing, the backend will not be able to provide the TF-IDF recommendations.
-
-▶️ Running the Application Locally
-The project has two parts:
-
-FastAPI backend
-Streamlit frontend
-You need to run both.
-
-6. Start FastAPI Backend
-   Open Terminal 1:
-
-uvicorn main:app --reload
-The backend will normally run at:
-
-http://127.0.0.1:8000
-You can test the health endpoint:
-
-http://127.0.0.1:8000/health
-Expected response:
-
-{
-"status": "ok"
-}
-FastAPI Documentation
-You can also open:
-
-http://127.0.0.1:8000/docs
-This opens the interactive Swagger API documentation.
-
-▶️ 7. Start Streamlit Frontend
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-Open a second terminal.
+Open another terminal.
 
 Activate the virtual environment if necessary:
 
-<<<<<<< HEAD
 ```bash
-venv\Scripts\activate
+.venv\Scripts\activate
 ```
 
 Then run:
@@ -609,45 +433,64 @@ Then run:
 streamlit run app.py
 ```
 
-Streamlit will normally open:
+Streamlit will provide a local URL similar to:
 
 ```text
 http://localhost:8501
 ```
 
-If it does not automatically open, copy the URL into your browser.
+Open the URL in your browser.
 
 ---
 
-# 🔗 Frontend → Backend Connection
+# 🔗 Frontend → Backend Configuration
 
-For local development, `app.py` should use:
+For local development, the frontend can communicate with the local FastAPI server:
 
-```python
-API_BASE = "http://127.0.0.1:8000"
+```text
+http://127.0.0.1:8000
 ```
 
-For a deployed backend, use the deployed FastAPI URL:
+For production, the Streamlit frontend communicates with the deployed FastAPI backend:
 
-```python
-API_BASE = "https://movie-rec-466x.onrender.com"
+```text
+https://movie-recommendation-api-7910.onrender.com
 ```
 
-### Important
+The architecture is therefore:
 
-Do **not** write:
+```text
+LOCAL
 
-```python
-API_BASE = "https://movie-rec-466x.onrender.com" or "http://127.0.0.1:8000"
+Streamlit
+   │
+   ▼
+127.0.0.1:8000
+   │
+   ▼
+FastAPI
 ```
 
-because Python will always select the first URL.
+Production:
+
+```text
+Internet User
+      │
+      ▼
+Streamlit Frontend
+      │
+      ▼
+FastAPI Backend
+      │
+      ▼
+TMDB API
+```
 
 ---
 
 # 🔌 API Endpoints
 
-The FastAPI backend provides the following endpoints.
+The FastAPI backend provides several endpoints.
 
 ## Health Check
 
@@ -655,83 +498,17 @@ The FastAPI backend provides the following endpoints.
 GET /health
 ```
 
-Example:
-
-```text
-http://127.0.0.1:8000/health
-```
+Used to check whether the backend is running.
 
 ---
 
-## Home Movies
+## Home
 
 ```http
 GET /home
 ```
 
-Parameters:
-
-```text
-category
-limit
-```
-
-Supported categories:
-
-```text
-=======
-venv\Scripts\activate
-Then run:
-
-streamlit run app.py
-Streamlit will normally open:
-
-http://localhost:8501
-If it does not automatically open, copy the URL into your browser.
-
-🔗 Frontend → Backend Connection
-For local development, app.py should use:
-
-API_BASE = "http://127.0.0.1:8000"
-For a deployed backend, use the deployed FastAPI URL:
-
-API_BASE = "https://movie-rec-466x.onrender.com"
-Important
-Do not write:
-
-API_BASE = "https://movie-rec-466x.onrender.com" or "http://127.0.0.1:8000"
-because Python will always select the first URL.
-
-🔌 API Endpoints
-The FastAPI backend provides the following endpoints.
-
-Health Check
-GET /health
-Example:
-
-http://127.0.0.1:8000/health
-Home Movies
-GET /home
-Parameters:
-
-category
-limit
-Supported categories:
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-trending
-popular
-top_rated
-upcoming
-now_playing
-<<<<<<< HEAD
-```
-
-Example:
-
-```text
-/home?category=popular&limit=24
-```
+Returns movie information used by the home page.
 
 ---
 
@@ -741,13 +518,13 @@ Example:
 GET /tmdb/search
 ```
 
+Searches movies using the TMDB API.
+
 Example:
 
 ```text
-/tmdb/search?query=batman
+/tmdb/search?query=Inception
 ```
-
-This returns multiple TMDB search results.
 
 ---
 
@@ -757,575 +534,269 @@ This returns multiple TMDB search results.
 GET /movie/id/{tmdb_id}
 ```
 
+Returns details for a specific movie.
+
 Example:
 
 ```text
-/movie/id/550
+/movie/id/27205
 ```
-
-This returns:
-
-* Movie title
-* Overview
-* Release date
-* Poster
-* Backdrop
-* Genres
 
 ---
 
-## Genre Recommendations
+## Genre Recommendation
 
 ```http
 GET /recommend/genre
 ```
 
-Example:
-
-```text
-/recommend/genre?tmdb_id=550&limit=18
-```
-
-The backend gets the movie's genre and finds popular movies from that genre.
+Returns recommendations based on movie genre.
 
 ---
 
-## TF-IDF Recommendations
+## TF-IDF Recommendation
 
 ```http
 GET /recommend/tfidf
 ```
 
-Example:
-
-```text
-/recommend/tfidf?title=Avatar&top_n=10
-```
-
-This uses the local TF-IDF matrix to calculate similar movies.
+Returns recommendations using the content-based TF-IDF recommendation engine.
 
 ---
 
-## Complete Movie Search
+## Movie Search
 
 ```http
 GET /movie/search
 ```
 
-Example:
-
-```text
-/movie/search?query=Avatar
-```
-
-This endpoint combines:
-
-```text
-Movie Details
-      +
-TF-IDF Recommendations
-      +
-Genre Recommendations
-```
-
-The Streamlit application uses this endpoint to display recommendations on the movie details page.
+Searches the processed movie dataset.
 
 ---
 
-# 🧠 Recommendation Workflow
+# 📚 API Documentation
 
-When the user selects a movie:
+FastAPI automatically generates interactive API documentation.
+
+### Swagger UI
 
 ```text
-User selects movie
-        │
-        ▼
-Get TMDB movie details
-        │
-        ├───────────────┐
-        │               │
-        ▼               ▼
-   TF-IDF Model      TMDB Genre
-        │               │
-        ▼               ▼
-Similar Movies      Genre Movies
-        │               │
-        └───────┬───────┘
-                ▼
-       Streamlit UI
+https://movie-recommendation-api-7910.onrender.com/docs
 ```
 
-### TF-IDF
-
-=======
-Example:
-
-/home?category=popular&limit=24
-TMDB Movie Search
-GET /tmdb/search
-Example:
-
-/tmdb/search?query=batman
-This returns multiple TMDB search results.
-
-Movie Details
-GET /movie/id/{tmdb_id}
-Example:
-
-/movie/id/550
-This returns:
-
-Movie title
-Overview
-Release date
-Poster
-Backdrop
-Genres
-Genre Recommendations
-GET /recommend/genre
-Example:
-
-/recommend/genre?tmdb_id=550&limit=18
-The backend gets the movie's genre and finds popular movies from that genre.
-
-TF-IDF Recommendations
-GET /recommend/tfidf
-Example:
-
-/recommend/tfidf?title=Avatar&top_n=10
-This uses the local TF-IDF matrix to calculate similar movies.
-
-Complete Movie Search
-GET /movie/search
-Example:
-
-/movie/search?query=Avatar
-This endpoint combines:
-
-Movie Details +
-TF-IDF Recommendations +
-Genre Recommendations
-The Streamlit application uses this endpoint to display recommendations on the movie details page.
-
-🧠 Recommendation Workflow
-When the user selects a movie:
-
-User selects movie
-│
-▼
-Get TMDB movie details
-│
-├───────────────┐
-│ │
-▼ ▼
-TF-IDF Model TMDB Genre
-│ │
-▼ ▼
-Similar Movies Genre Movies
-│ │
-└───────┬───────┘
-▼
-Streamlit UI
-TF-IDF
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-The local TF-IDF matrix is used to calculate similarity between movies.
-
-Conceptually:
-
-<<<<<<< HEAD
-```text
-Movie A
-   │
-   ▼
-TF-IDF Vector
-   │
-   ▼
-Cosine Similarity
-   │
-   ▼
-Top Similar Movies
-```
-
-### Genre Recommendation
+### ReDoc
 
 ```text
-Selected Movie
-      │
-      ▼
-TMDB Movie Details
-      │
-      ▼
-First Genre
-      │
-      ▼
-TMDB Discover API
-      │
-      ▼
-Popular Movies in Genre
+https://movie-recommendation-api-7910.onrender.com/redoc
 ```
 
 ---
 
-# 🌐 Deployment
+# ☁️ Deployment
 
-The application can be deployed as two services.
+The project is deployed on **Render**.
 
-### Backend
+There are two separate web services.
 
-=======
-Movie A
-│
-▼
-TF-IDF Vector
-│
-▼
-Cosine Similarity
-│
-▼
-Top Similar Movies
-Genre Recommendation
-Selected Movie
-│
-▼
-TMDB Movie Details
-│
-▼
-First Genre
-│
-▼
-TMDB Discover API
-│
-▼
-Popular Movies in Genre
-🌐 Deployment
-The application can be deployed as two services.
+## 1. FastAPI Backend
 
-Backend
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-Deploy the FastAPI application using a service such as Render.
+```text
+Service:
+movie-recommendation-api
 
-Start command:
+URL:
+https://movie-recommendation-api-7910.onrender.com
+```
 
-<<<<<<< HEAD
+### Build Command
+
+```bash
+pip install -r requirements.txt
+```
+
+### Start Command
+
 ```bash
 uvicorn main:app --host 0.0.0.0 --port $PORT
 ```
 
-Set the environment variable:
+---
+
+## 2. Streamlit Frontend
+
+```text
+Service:
+movie-recommendation-app
+
+URL:
+https://movie-recommendation-app-sfxg.onrender.com
+```
+
+### Build Command
+
+```bash
+pip install -r requirements.txt
+```
+
+### Start Command
+
+```bash
+streamlit run app.py --server.address 0.0.0.0 --server.port $PORT
+```
+
+---
+
+# 🔐 Environment Variables
+
+The backend requires:
+
+```text
+TMDB_API_KEY
+```
+
+Example:
 
 ```text
 TMDB_API_KEY=your_api_key
 ```
 
-Make sure the following files are available to the backend:
+For production deployment, the API key should be stored in Render's **Environment Variables** instead of committing it to GitHub.
+
+---
+
+# 🧪 Testing
+
+The application can be tested through:
+
+### Backend Health
 
 ```text
-=======
-uvicorn main:app --host 0.0.0.0 --port $PORT
-Set the environment variable:
+/health
+```
 
-TMDB_API_KEY=your_api_key
-Make sure the following files are available to the backend:
+### Swagger API
 
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-main.py
-df.pkl
-indices.pkl
-tfidf.pkl
-tfidf_matrix.pkl
-<<<<<<< HEAD
+```text
+/docs
 ```
 
 ### Frontend
 
-Deploy `app.py` using Streamlit Community Cloud or another Streamlit-compatible platform.
+Open the Streamlit deployment URL and test:
 
-Update:
-
-```python
-API_BASE = "https://YOUR-BACKEND-URL"
-```
-
-For example:
-
-```python
-API_BASE = "https://movie-rec-466x.onrender.com"
-```
+- Movie search
+- Movie details
+- Recommendations
+- Genre recommendations
+- Posters
+- Navigation
 
 ---
 
-# 🔐 Security
+# ⚠️ Important Notes
 
-=======
-Frontend
-Deploy app.py using Streamlit Community Cloud or another Streamlit-compatible platform.
+## Render Free Instance
 
-Update:
+If the project is deployed using Render's free instance, the service may **sleep after a period of inactivity**.
 
-API_BASE = "https://YOUR-BACKEND-URL"
-For example:
-
-API_BASE = "https://movie-rec-466x.onrender.com"
-🔐 Security
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-Never commit your TMDB API key.
-
-Add:
-
-<<<<<<< HEAD
-```text
-.env
-```
-
-to `.gitignore`.
-
-Example `.gitignore`:
-
-```text
-.env
-venv/
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-```
-
-If the API key has already been uploaded to GitHub, regenerate/revoke the key from TMDB and replace it with a new one.
+The first request after inactivity may therefore take some time while the service starts again.
 
 ---
 
-# 🛠️ Troubleshooting
+## Pickle Files
 
-## `TMDB_API_KEY missing`
-
-Error:
+The recommendation system depends on preprocessed `.pkl` files:
 
 ```text
-TMDB_API_KEY missing
-```
-
-Solution:
-
-Create `.env`:
-
-```env
-TMDB_API_KEY=your_key_here
-```
-
-Then restart FastAPI.
-
----
-
-## `Connection refused`
-
-If Streamlit shows:
-
-```text
-Request failed
-```
-
-make sure FastAPI is running:
-
-```bash
-uvicorn main:app --reload
-```
-
-Then check:
-
-```text
-http://127.0.0.1:8000/health
-```
-
----
-
-## TF-IDF resources not loaded
-
-Make sure these files exist:
-
-```text
-=======
-.env
-to .gitignore.
-
-Example .gitignore:
-
-.env
-venv/
-**pycache**/
-\*.pyc
-.ipynb_checkpoints/
-If the API key has already been uploaded to GitHub, regenerate/revoke the key from TMDB and replace it with a new one.
-
-🛠️ Troubleshooting
-TMDB_API_KEY missing
-Error:
-
-TMDB_API_KEY missing
-Solution:
-
-Create .env:
-
-TMDB_API_KEY=your_key_here
-Then restart FastAPI.
-
-Connection refused
-If Streamlit shows:
-
-Request failed
-make sure FastAPI is running:
-
-uvicorn main:app --reload
-Then check:
-
-http://127.0.0.1:8000/health
-TF-IDF resources not loaded
-Make sure these files exist:
-
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
 df.pkl
 indices.pkl
-tfidf_matrix.pkl
 tfidf.pkl
-<<<<<<< HEAD
+tfidf_matrix.pkl
 ```
 
-and are located beside `main.py`.
+These files are required by the FastAPI backend for the recommendation system.
 
 ---
 
-## Movie search works but recommendations don't
+# 🔮 Future Improvements
 
-Check:
+Possible future improvements include:
 
-1. `df.pkl` contains a `title` column.
-2. `indices.pkl` contains the movie title-to-index mapping.
-3. `tfidf_matrix.pkl` is available.
-4. The selected movie title exists in the local dataset.
-5. FastAPI is running without startup errors.
-
----
-
-# 📸 Application Flow
-
-```text
-                    HOME
-                      │
-          ┌───────────┴───────────┐
-          │                       │
-       Search                 Home Feed
-          │                       │
-          ▼                       ▼
-    Movie Suggestions      Popular/Trending/etc.
-          │
-          ▼
-    Select Movie
-          │
-          ▼
-    Movie Details
-          │
-          ├───────────────┐
-          │               │
-          ▼               ▼
-   TF-IDF Similarity   Genre Based
-          │               │
-          ▼               ▼
-   Similar Movies     More Like This
-```
+- ⭐ User-based personalized recommendations
+- 👤 User accounts
+- ❤️ Favorite movies
+- 📜 Recommendation history
+- 🎯 Personalized recommendation profiles
+- 🧠 Hybrid recommendation system
+- 🔥 Trending movie section
+- 🎭 Better genre filtering
+- 📊 Recommendation explanation
+- 🗄️ Database integration
+- 📱 Improved mobile UI
+- ⚡ Recommendation caching
+- 🔐 Authentication and authorization
 
 ---
 
-# 👨‍💻 Project Purpose
+# 🎯 Learning Objectives
 
-This project demonstrates how a movie recommendation system can combine:
+This project demonstrates practical experience with:
 
-* Machine Learning
-* Natural Language Processing
-* TF-IDF
-* Cosine Similarity
-* REST APIs
-* FastAPI
-* Streamlit
-* External API integration
-* Pre-trained ML artifacts
-* Interactive web interfaces
+- Machine Learning
+- Natural Language Processing
+- Recommendation Systems
+- TF-IDF
+- Cosine Similarity
+- REST APIs
+- FastAPI
+- Streamlit
+- API integration
+- Data preprocessing
+- Python backend development
+- Frontend-backend communication
+- Git and GitHub
+- Cloud deployment
+- Render deployment
 
-The architecture separates the **frontend** and **backend**, making the recommendation system easier to deploy and maintain.
+---
+
+# 👨‍💻 Author
+
+**Kazi Sadman Zahin**
+
+Computer Science & Engineering Student
+
+### GitHub
+
+https://github.com/Kazi-Sadman
 
 ---
 
 # 📜 License
 
-=======
-and are located beside main.py.
+This project is developed for **educational and portfolio purposes**.
 
-Movie search works but recommendations don't
-Check:
+Movie data, posters, ratings, and related metadata are provided through the **TMDB API** and are subject to TMDB's terms and policies.
 
-df.pkl contains a title column.
-indices.pkl contains the movie title-to-index mapping.
-tfidf_matrix.pkl is available.
-The selected movie title exists in the local dataset.
-FastAPI is running without startup errors.
-📸 Application Flow
-HOME
-│
-┌───────────┴───────────┐
-│ │
-Search Home Feed
-│ │
-▼ ▼
-Movie Suggestions Popular/Trending/etc.
-│
-▼
-Select Movie
-│
-▼
-Movie Details
-│
-├───────────────┐
-│ │
-▼ ▼
-TF-IDF Similarity Genre Based
-│ │
-▼ ▼
-Similar Movies More Like This
-👨‍💻 Project Purpose
-This project demonstrates how a movie recommendation system can combine:
-
-Machine Learning
-Natural Language Processing
-TF-IDF
-Cosine Similarity
-REST APIs
-FastAPI
-Streamlit
-External API integration
-Pre-trained ML artifacts
-Interactive web interfaces
-The architecture separates the frontend and backend, making the recommendation system easier to deploy and maintain.
-
-📜 License
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
-This project is developed for educational and academic purposes.
-
-Movie metadata, images, and related information are provided through the TMDB API.
-
-<<<<<<< HEAD
 ---
 
-# 🙏 Acknowledgements
+# ⭐ Support
 
-* **TMDB** — Movie metadata, posters, and movie information
-* **FastAPI** — Backend API framework
-* **Streamlit** — Interactive frontend
-* **Scikit-learn** — TF-IDF and machine learning utilities
-* **Pandas / NumPy** — Data processing
-* **SciPy** — Sparse matrix processing
-=======
-🙏 Acknowledgements
-TMDB — Movie metadata, posters, and movie information
-FastAPI — Backend API framework
-Streamlit — Interactive frontend
-Scikit-learn — TF-IDF and machine learning utilities
-Pandas / NumPy — Data processing
-SciPy — Sparse matrix processing
->>>>>>> eec5cd5 (updated the code of main.py for deployment)
+If you find this project useful, consider giving the repository a ⭐ on GitHub.
+
+---
+
+## 🚀 Live Application
+
+### 🎬 Movie Recommendation System
+
+**Frontend:**
+https://movie-recommendation-app-sfxg.onrender.com
+
+**Backend:**
+https://movie-recommendation-api-7910.onrender.com
+
+**API Documentation:**
+https://movie-recommendation-api-7910.onrender.com/docs
+
+---
