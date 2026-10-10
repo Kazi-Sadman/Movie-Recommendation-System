@@ -285,12 +285,7 @@ def health() -> dict:
     return {"status": "ok"}
 
 
-@app.get("/home", response_model=List[TMDBMovieCard])
-@app.get("/movies/{category}", response_model=List[TMDBMovieCard], include_in_schema=False)
-async def home(
-    category: str = "popular",
-    limit: int = Query(24, ge=1, le=50),
-) -> List[TMDBMovieCard]:
+async def get_home_movies(category: str, limit: int) -> List[TMDBMovieCard]:
     if category == "trending":
         data = await tmdb_get("/trending/movie/day", {"language": "en-US"})
     elif category in {"popular", "top_rated", "upcoming", "now_playing"}:
@@ -301,6 +296,23 @@ async def home(
             detail="Invalid category. Use trending, popular, top_rated, upcoming, or now_playing.",
         )
     return cards_from_results(data.get("results") or [], limit)
+
+
+@app.get("/home", response_model=List[TMDBMovieCard])
+async def home(
+    category: str = Query("popular"),
+    limit: int = Query(24, ge=1, le=50),
+) -> List[TMDBMovieCard]:
+    return await get_home_movies(category, limit)
+
+
+# Backward compatibility for older frontend deployments calling /movies/trending.
+@app.get("/movies/{category}", response_model=List[TMDBMovieCard], include_in_schema=False)
+async def legacy_home(
+    category: str,
+    limit: int = Query(24, ge=1, le=50),
+) -> List[TMDBMovieCard]:
+    return await get_home_movies(category, limit)
 
 
 @app.get("/tmdb/search")
