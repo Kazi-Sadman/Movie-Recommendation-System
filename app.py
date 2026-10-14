@@ -241,21 +241,32 @@ if st.query_params.get("view") == "details" and st.query_params.get("id"):
 # ==================================================================
 # API helpers
 # ==================================================================
+import time
+
 @st.cache_data(ttl=120, show_spinner=False)
 def api_get(path: str, params: Optional[Dict[str, Any]] = None):
-    for attempt in range(3):
+    """GET JSON with proper retries for Render cold starts."""
+    last_error = None
+    for attempt in range(4):  # 4 attempts total
         try:
             r = requests.get(f"{API_BASE}{path}", params=params, timeout=90)
-            if r.status_code in (502, 503, 504) and attempt < 2:
-                continue
+            if r.status_code in (502, 503, 504):
+                # Backend is booting. Wait longer each retry.
+                if attempt < 3:
+                    time.sleep(8 + attempt * 4)  # 8s, 12s, 16s = 36s total
+                    continue
+                else:
+                    return None, "Backend is starting up (502). Please wait ~30s and refresh."
             if r.status_code >= 400:
                 return None, f"HTTP {r.status_code}: {r.text[:200]}"
             return r.json(), None
         except requests.RequestException as e:
-            if attempt == 2:
-                return None, f"Request failed: {e}"
-    return None, "Unknown error"
-
+            last_error = str(e)
+            if attempt < 3:
+                time.sleep(5)
+                continue
+            return None, f"Request failed: {e}"
+    return None, last_error or "Unknown error"
 
 def api_send(method: str, path: str, params=None, body=None):
     try:
