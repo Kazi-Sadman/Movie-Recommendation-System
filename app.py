@@ -1,6 +1,6 @@
 """
 Movie Recommender — Streamlit frontend.
-Simple, beginner-friendly. All pages live in one file.
+Same features as before, but with a colorful, polished design.
 """
 
 import os
@@ -21,43 +21,202 @@ TMDB_IMG = "https://image.tmdb.org/t/p/w500"
 
 st.set_page_config(page_title="Movie Recommender", page_icon="🎬", layout="wide")
 
-# ------------------------------------------------------------------
-# Small CSS for a dark, cinematic look
-# ------------------------------------------------------------------
+
+# ==================================================================
+# 🎨 COLORFUL CSS
+# ==================================================================
 st.markdown("""
 <style>
-.stApp { background: #0b0d12; color: #e6e8ee; }
-section[data-testid="stSidebar"] { background: #11141b; }
-.block-container { padding-top: 1.2rem; padding-bottom: 3rem; max-width: 1400px; }
-.movie-title { font-size: 0.9rem; line-height: 1.2rem; min-height: 2.4rem; overflow: hidden; }
-.muted { color: #9aa3b2; font-size: 0.9rem; }
-.hero {
-    padding: 1.6rem 1.4rem; border-radius: 16px;
-    background: linear-gradient(120deg, #1b2030, #0e1118);
-    border: 1px solid #1e2430;
+/* ---------- Global ---------- */
+.stApp {
+    background: radial-gradient(circle at 15% 0%, #1a1040 0%, #0a0b14 40%, #05060a 100%);
+    color: #eef1f8;
+    font-family: "Segoe UI", system-ui, sans-serif;
 }
-.hero h1 { margin: 0; font-size: 2rem; }
-.hero p { color: #9aa3b2; margin-top: .4rem; }
+.block-container { padding-top: 1.5rem; padding-bottom: 3rem; max-width: 1400px; }
+
+/* ---------- Sidebar ---------- */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #141026 0%, #0b0a18 100%);
+    border-right: 1px solid #251a4a;
+}
+section[data-testid="stSidebar"] h2 {
+    background: linear-gradient(90deg, #a855f7, #ec4899, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+section[data-testid="stSidebar"] .stButton>button {
+    background: linear-gradient(90deg, #1c1633, #221a44);
+    border: 1px solid #34265c;
+    color: #cfc6ff;
+    font-weight: 500;
+    transition: all 0.18s ease;
+}
+section[data-testid="stSidebar"] .stButton>button:hover {
+    background: linear-gradient(90deg, #7c3aed, #db2777);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 0 16px rgba(168,85,247,0.45);
+    transform: translateX(3px);
+}
+
+/* ---------- Headings ---------- */
+h1, h2, h3 { color: #ffffff; font-weight: 800; letter-spacing: -0.02em; }
+h1 { background: linear-gradient(90deg, #a855f7, #ec4899 45%, #f59e0b);
+     -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ---------- Hero ---------- */
+.hero {
+    padding: 2rem 1.8rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #4c1d95 0%, #831843 50%, #b45309 100%);
+    box-shadow: 0 20px 60px -20px rgba(168,85,247,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+}
+.hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15), transparent 45%);
+    pointer-events: none;
+}
+.hero h1 {
+    -webkit-text-fill-color: #ffffff;
+    background: none;
+    margin: 0;
+    font-size: 2.2rem;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.4);
+}
+.hero p { color: rgba(255,255,255,0.85); margin-top: .5rem; font-size: 1.05rem; }
+
+/* ---------- Movie cards ---------- */
+.movie-title {
+    font-size: 0.92rem;
+    line-height: 1.25rem;
+    min-height: 2.5rem;
+    overflow: hidden;
+    color: #eef1f8;
+    font-weight: 600;
+    margin-top: .35rem;
+}
+.movie-meta {
+    display: inline-block;
+    padding: .15rem .55rem;
+    border-radius: 6px;
+    background: rgba(168,85,247,0.15);
+    color: #c4b5fd;
+    font-size: .78rem;
+    margin-right: .3rem;
+    margin-top: .2rem;
+}
+.rating-pill {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    color: #1a1a1a;
+    font-weight: 700;
+}
+
+/* ---------- Buttons (main area) ---------- */
+.stButton>button {
+    background: linear-gradient(90deg, #7c3aed, #db2777);
+    color: white !important;
+    border: none;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 14px -4px rgba(168,85,247,0.4);
+}
+.stButton>button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -4px rgba(236,72,153,0.6);
+}
+
+/* ---------- Inputs ---------- */
+.stTextInput>div>div>input,
+.stNumberInput>div>div>input {
+    background: rgba(20,18,40,0.7);
+    border: 1px solid #34265c;
+    color: white;
+    border-radius: 10px;
+}
+.stTextInput>div>div>input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168,85,247,0.25);
+}
+
+/* ---------- Tabs ---------- */
+.stTabs [data-baseweb="tab-list"] { gap: 6px; }
+.stTabs [data-baseweb="tab"] {
+    background: rgba(30,24,60,0.6);
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: #a99cd8;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(90deg, #7c3aed, #db2777);
+    color: white !important;
+    border-color: transparent;
+}
+
+/* ---------- Alerts / info boxes ---------- */
+.stAlert { border-radius: 12px; }
+div[data-testid="stAlert"] {
+    background: rgba(124,58,237,0.08);
+    border-left: 3px solid #a855f7;
+}
+
+/* ---------- Expander ---------- */
+.streamlit-expanderHeader, details summary {
+    background: rgba(30,24,60,0.5) !important;
+    border-radius: 10px !important;
+    color: #cfc6ff !important;
+}
+
+/* ---------- Metrics ---------- */
+[data-testid="stMetricValue"] {
+    background: linear-gradient(90deg, #a855f7, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+/* ---------- Chips ---------- */
 .chip {
-    display: inline-block; padding: .2rem .6rem; border-radius: 999px;
-    background: #1e2430; color: #cbd5e1; font-size: .8rem; margin-right: .35rem;
+    display: inline-block;
+    padding: .25rem .7rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(168,85,247,0.25), rgba(236,72,153,0.25));
+    border: 1px solid rgba(168,85,247,0.4);
+    color: #e9d5ff;
+    font-size: .8rem;
+    margin: 0 .35rem .35rem 0;
 }
 .score-badge {
-    display: inline-block; padding: .15rem .55rem; border-radius: 8px;
-    background: #1a3a2a; color: #6ee7b7; font-size: .78rem;
+    display: inline-block;
+    padding: .2rem .65rem;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #059669, #10b981);
+    color: white;
+    font-size: .78rem;
+    font-weight: 700;
+    box-shadow: 0 2px 10px -2px rgba(16,185,129,0.5);
 }
-.stButton>button {
-    border-radius: 10px; border: 1px solid #2a3140;
-    background: #161b24; color: #e6e8ee;
-}
-.stButton>button:hover { border-color: #3b82f6; color: #93c5fd; }
+
+/* ---------- Image rounding ---------- */
+img { border-radius: 12px; }
+
+/* ---------- Caption colors ---------- */
+.stCaption, .muted { color: #9a8fc4 !important; }
 </style>
 """, unsafe_allow_html=True)
 
 
-# ------------------------------------------------------------------
+# ==================================================================
 # Session state
-# ------------------------------------------------------------------
+# ==================================================================
 if "view" not in st.session_state:
     st.session_state.view = "Home"
 if "selected_tmdb_id" not in st.session_state:
@@ -71,7 +230,6 @@ if "grid_cols" not in st.session_state:
 if "search_query" not in st.session_state:
     st.session_state.search_query = ""
 
-# Restore details view from URL (?view=details&id=...)
 if st.query_params.get("view") == "details" and st.query_params.get("id"):
     try:
         st.session_state.selected_tmdb_id = int(st.query_params["id"])
@@ -80,12 +238,11 @@ if st.query_params.get("view") == "details" and st.query_params.get("id"):
         pass
 
 
-# ------------------------------------------------------------------
-# API helpers — with retry for Render cold starts
-# ------------------------------------------------------------------
+# ==================================================================
+# API helpers
+# ==================================================================
 @st.cache_data(ttl=120, show_spinner=False)
-def api_get(path: str, params: Optional[Dict[str, Any]] = None) -> (Any, Optional[str]):
-    """GET JSON with a couple of retries for cold starts."""
+def api_get(path: str, params: Optional[Dict[str, Any]] = None):
     for attempt in range(3):
         try:
             r = requests.get(f"{API_BASE}{path}", params=params, timeout=90)
@@ -100,8 +257,7 @@ def api_get(path: str, params: Optional[Dict[str, Any]] = None) -> (Any, Optiona
     return None, "Unknown error"
 
 
-def api_send(method: str, path: str, params=None, body=None) -> (Any, Optional[str]):
-    """POST or DELETE (not cached)."""
+def api_send(method: str, path: str, params=None, body=None):
     try:
         url = f"{API_BASE}{path}"
         if method == "POST":
@@ -120,9 +276,9 @@ def api_send(method: str, path: str, params=None, body=None) -> (Any, Optional[s
         return None, f"Request failed: {e}"
 
 
-# ------------------------------------------------------------------
+# ==================================================================
 # Small helpers
-# ------------------------------------------------------------------
+# ==================================================================
 def go_to(view_name: str):
     st.session_state.view = view_name
     if "id" in st.query_params:
@@ -149,7 +305,6 @@ def to_float(v):
 
 
 def card_from_tmdb(item: dict) -> dict:
-    """Turn a TMDB result OR backend movie card into our standard dict."""
     movie_id = item.get("tmdb_id") or item.get("id")
     if not movie_id:
         return {}
@@ -166,7 +321,6 @@ def card_from_tmdb(item: dict) -> dict:
 
 
 def poster_grid(movies: List[dict], cols: int, key: str, show_score: bool = False):
-    """Draw movie cards in a grid."""
     if not movies:
         st.info("No movies to show.")
         return
@@ -181,23 +335,27 @@ def poster_grid(movies: List[dict], cols: int, key: str, show_score: bool = Fals
                 else:
                     st.markdown(
                         "<div style='height:270px; display:flex; align-items:center;"
-                        "justify-content:center; background:#161b24; border-radius:8px;"
-                        "color:#666;'>🖼️ No poster</div>",
+                        "justify-content:center; background:#1a1430; border-radius:12px;"
+                        "color:#7c6899; font-size:.85rem;'>🖼️ No poster</div>",
                         unsafe_allow_html=True,
                     )
+
                 title = movie.get("title", "Untitled")
-                st.markdown(f"<div class='movie-title'><b>{title}</b></div>",
-                            unsafe_allow_html=True)
+                st.markdown(
+                    f"<div class='movie-title'>{title}</div>",
+                    unsafe_allow_html=True,
+                )
 
                 year = (movie.get("release_date") or "")[:4]
                 rating = to_float(movie.get("vote_average"))
-                parts = []
+
+                meta_html = ""
                 if year:
-                    parts.append(year)
+                    meta_html += f"<span class='movie-meta'>{year}</span>"
                 if rating is not None:
-                    parts.append(f"⭐ {rating:.1f}")
-                if parts:
-                    st.caption(" · ".join(parts))
+                    meta_html += f"<span class='movie-meta rating-pill'>⭐ {rating:.1f}</span>"
+                if meta_html:
+                    st.markdown(meta_html, unsafe_allow_html=True)
 
                 if show_score and movie.get("score") is not None:
                     score = to_float(movie["score"]) or 0.0
@@ -206,17 +364,21 @@ def poster_grid(movies: List[dict], cols: int, key: str, show_score: bool = Fals
                         unsafe_allow_html=True,
                     )
 
-                if st.button("Open", key=f"{key}_{movie['tmdb_id']}_{start}",
+                if st.button("▶ Open", key=f"{key}_{movie['tmdb_id']}_{start}",
                              use_container_width=True):
                     open_details(movie["tmdb_id"], title)
 
 
-# ------------------------------------------------------------------
-# Sidebar navigation (simplified)
-# ------------------------------------------------------------------
+# ==================================================================
+# Sidebar
+# ==================================================================
 with st.sidebar:
     st.markdown("## 🎬 Movie Recommender")
-    st.caption("Content-based recommendations with TF-IDF.")
+    st.markdown(
+        "<p style='color:#9a8fc4; font-size:.85rem; margin-top:-8px;'>"
+        "Content-based recommendations with TF-IDF</p>",
+        unsafe_allow_html=True,
+    )
     st.divider()
 
     sections = {
@@ -226,18 +388,24 @@ with st.sidebar:
         "PROJECT": ["About Project"],
     }
     for section, items in sections.items():
-        st.markdown(f"**{section}**")
+        st.markdown(
+            f"<div style='color:#7c6899; font-size:.75rem; font-weight:700; "
+            f"letter-spacing:.08em; margin: 12px 0 6px;'>{section}</div>",
+            unsafe_allow_html=True,
+        )
         for item in items:
             label = ("▶ " if st.session_state.view == item else "• ") + item
             if st.button(label, key=f"nav_{item}", use_container_width=True):
                 go_to(item)
-        st.write("")
 
     st.divider()
     st.session_state.grid_cols = st.slider(
         "Grid columns", 3, 8, st.session_state.grid_cols
     )
-    st.caption("Backend API")
+    st.markdown(
+        "<div style='color:#7c6899; font-size:.75rem; margin-top:12px;'>BACKEND</div>",
+        unsafe_allow_html=True,
+    )
     st.code(API_BASE, language="text")
 
 GRID_COLS = st.session_state.grid_cols
@@ -255,7 +423,6 @@ def page_home():
     """, unsafe_allow_html=True)
     st.write("")
 
-    # Search bar + button
     col1, col2 = st.columns([5, 1])
     with col1:
         typed = st.text_input(
@@ -268,7 +435,6 @@ def page_home():
     with col2:
         search_clicked = st.button("🔍 Search", use_container_width=True, type="primary")
 
-    # If a search was run, show results and stop (don't show feed below)
     if search_clicked:
         st.session_state.search_query = typed.strip()
 
@@ -288,12 +454,11 @@ def page_home():
                 poster_grid(cards[:24], GRID_COLS, key="home_search")
                 if not cards:
                     st.info("No matches found.")
-        if st.button("Clear search"):
+        if st.button("✖ Clear search"):
             st.session_state.search_query = ""
             st.rerun()
         return
 
-    # No search → show category tabs
     st.markdown("### 🏠 Browse movies")
     categories = ["trending", "popular", "top_rated", "now_playing", "upcoming"]
     labels = [c.replace("_", " ").title() for c in categories]
@@ -337,7 +502,10 @@ def page_details():
     if data.get("backdrop_url"):
         st.image(data["backdrop_url"], use_container_width=True)
 
-    st.header(title)
+    st.markdown(
+        f"<h1 style='margin-top:1rem;'>{title}</h1>",
+        unsafe_allow_html=True,
+    )
 
     left, right = st.columns([1, 2])
     with left:
@@ -349,7 +517,7 @@ def page_details():
         if data.get("runtime"):
             st.write(f"**Runtime:** {data['runtime']} min")
         if data.get("vote_average"):
-            st.write(f"**Rating:** {data['vote_average']} / 10")
+            st.write(f"**Rating:** ⭐ {data['vote_average']} / 10")
 
         genres = data.get("genres") or []
         if genres:
@@ -401,11 +569,11 @@ def page_compare():
 
     col1, col2 = st.columns(2)
     with col1:
-        title_a = st.text_input("First movie", key="cmp_a")
+        title_a = st.text_input("First movie", key="cmp_a", placeholder="e.g. Inception")
     with col2:
-        title_b = st.text_input("Second movie", key="cmp_b")
+        title_b = st.text_input("Second movie", key="cmp_b", placeholder="e.g. Interstellar")
 
-    if not st.button("Compare", type="primary"):
+    if not st.button("⚖️ Compare", type="primary"):
         return
     if not title_a.strip() or not title_b.strip():
         st.warning("Enter both movie titles.")
@@ -435,16 +603,24 @@ def page_compare():
         return
 
     left, right = st.columns(2)
-    for col, d in ((left, d1), (right, d2)):
+    for col, d, accent in (
+        (left, d1, "linear-gradient(135deg,#7c3aed,#a855f7)"),
+        (right, d2, "linear-gradient(135deg,#db2777,#f59e0b)"),
+    ):
         with col:
             if d.get("poster_url"):
                 st.image(d["poster_url"], use_container_width=True)
-            st.subheader(d.get("title") or "Untitled")
+            st.markdown(
+                f"<div style='padding:.6rem 1rem; border-radius:10px; "
+                f"background:{accent}; margin:.6rem 0 .8rem; font-weight:700; "
+                f"text-align:center;'>{d.get('title') or 'Untitled'}</div>",
+                unsafe_allow_html=True,
+            )
 
             for label, val in [
                 ("Release", d.get("release_date")),
                 ("Runtime", f"{d['runtime']} min" if d.get("runtime") else None),
-                ("Rating", f"{d['vote_average']} / 10" if d.get("vote_average") else None),
+                ("Rating", f"⭐ {d['vote_average']} / 10" if d.get("vote_average") else None),
                 ("Votes", d.get("vote_count")),
                 ("Popularity", round(d["popularity"], 1) if d.get("popularity") else None),
             ]:
@@ -469,27 +645,26 @@ def page_analytics():
         st.error(f"Could not load analytics: {err}")
         st.info(
             "This endpoint exists only on the **new** backend. "
-            "Make sure you deployed the updated `main.py` and `database.py` "
-            "to Render, then redeploy the backend service."
+            "Deploy the updated `main.py` and `database.py` to Render."
         )
         return
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Movies in dataset", f"{data.get('total_movies', 0):,}")
-    c2.metric("TF-IDF vocabulary", f"{data.get('tfidf_vocab_size', 0):,}")
-    c3.metric("Columns", len(data.get("columns", [])))
+    c1.metric("🎬 Movies", f"{data.get('total_movies', 0):,}")
+    c2.metric("📚 TF-IDF vocab", f"{data.get('tfidf_vocab_size', 0):,}")
+    c3.metric("📋 Columns", len(data.get("columns", [])))
 
     st.divider()
 
     top = data.get("top_genres") or []
     if top:
         st.markdown("### 🎭 Top genres")
-        st.bar_chart({g["genre"]: g["count"] for g in top[:15]})
+        st.bar_chart({g["genre"]: g["count"] for g in top[:15]}, color="#a855f7")
 
     hist = data.get("rating_histogram") or []
     if hist:
         st.markdown("### ⭐ Ratings distribution")
-        st.bar_chart({r["range"]: r["count"] for r in hist})
+        st.bar_chart({r["range"]: r["count"] for r in hist}, color="#f59e0b")
 
     pop = data.get("top_popular") or []
     if pop:
@@ -506,12 +681,12 @@ def page_analytics():
 
 
 # ==================================================================
-# WATCHLIST
+# Collection shared block
 # ==================================================================
 def add_search_block(kind: str, key_prefix: str):
-    """Reusable 'search and add' block for Watchlist and Favorites."""
     with st.expander(f"➕ Add a movie to your {kind}"):
-        title = st.text_input("Movie title", key=f"{key_prefix}_title")
+        title = st.text_input("Movie title", key=f"{key_prefix}_title",
+                              placeholder="Type a movie and press Search")
         if st.button("Search", key=f"{key_prefix}_search"):
             if not title.strip():
                 st.warning("Type a title.")
@@ -542,9 +717,12 @@ def add_search_block(kind: str, key_prefix: str):
                                 api_get.clear()
 
 
+# ==================================================================
+# WATCHLIST
+# ==================================================================
 def page_watchlist():
     st.markdown("## 📌 My Watchlist")
-    st.caption("Shared watchlist stored on the backend (SQLite).")
+    st.caption("A shared watchlist stored on the backend (SQLite).")
 
     add_search_block("watchlist", "wl")
     st.divider()
@@ -555,7 +733,7 @@ def page_watchlist():
         st.info("This endpoint exists only on the new backend. Deploy the updated `main.py`.")
         return
     if not items:
-        st.info("Your watchlist is empty.")
+        st.info("Your watchlist is empty. Add a movie above!")
         return
 
     for row in items:
@@ -597,7 +775,7 @@ def page_favorites():
         st.info("This endpoint exists only on the new backend. Deploy the updated `main.py`.")
         return
     if not items:
-        st.info("No favorites yet.")
+        st.info("No favorites yet. Add one above!")
         return
 
     cards = [{
@@ -609,7 +787,7 @@ def page_favorites():
     poster_grid(cards, GRID_COLS, key="fav")
 
     st.divider()
-    st.markdown("**Manage**")
+    st.markdown("**Manage favorites**")
     for row in items:
         c1, c2 = st.columns([5, 1])
         c1.write(row["title"])
